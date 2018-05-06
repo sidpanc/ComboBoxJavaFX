@@ -1,32 +1,48 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 
-import java.lang.String;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
-    public Label myLabel;
-    @FXML
-    public ComboBox<String> combobox;
-    ObservableList<String> list = FXCollections.observableArrayList("Mark","Jon","Sarah","Rob");
+    TreeView<String> treeView;
+
+    Image img = new Image(getClass().getResourceAsStream("Folder.png"));
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //combobox.setItems(list);
-    }
+        TreeItem<String> root = new TreeItem<>("Root",new ImageView(img));
+        root.setExpanded(true);
 
-    public void changeCombobox(ActionEvent event){
-        combobox.getItems().addAll("Fanta","Cola","Sprite","Pepsi");
-        //myLabel.setText(combobox.getValue());
+        TreeItem<String> nodeA = new TreeItem<>("node A",new ImageView(img));
+        TreeItem<String> nodeB = new TreeItem<>("node B",new ImageView(img));
+        TreeItem<String> nodeC = new TreeItem<>("node C");
+
+        root.getChildren().addAll(nodeA, nodeB, nodeC);
+        nodeA.setExpanded(true);
+
+        TreeItem<String> nodeA1 = new TreeItem<>("node A1");
+        nodeA.getChildren().add(nodeA1);
+        TreeItem<String> nodeA2 = new TreeItem<>("node A2");
+        nodeB.getChildren().add(nodeA2);
+        TreeItem<String> nodeA3 = new TreeItem<>("node A3");
+        nodeC.getChildren().add(nodeA3);
+
+        treeView.setRoot(root);
     }
-    public void buttonAction(ActionEvent event){
-        combobox.getItems().addAll("Fanta","Cola","Sprite","Pepsi");
-        //myLabel.setText(combobox.getValue());
+    
+    public void clickMouse(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2){
+            TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+            System.out.println(item.getValue());
+        }
     }
 }
+
